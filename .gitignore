@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+
+# Local Django data
+*.sqlite3
+*.sqlite3-journal
+media/
+staticfiles/
+*.log
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Tools and editors
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+.DS_Store
+
+# Local agent configuration
+.agents/
+.codex/
+.aws/
