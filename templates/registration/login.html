@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Вход · Ad Spend Tracker{% endblock %}
+{% block content %}
+  <section class="form-page">
+    <h1>Войти в аккаунт</h1>
+    <p class="muted">Ваши кампании и расходы в одном месте.</p>
+    <form method="post">
+      {% csrf_token %}
+      {% include "includes/form_fields.html" %}
+      {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+      <button type="submit">Войти</button>
+    </form>
+  </section>
+{% endblock %}
