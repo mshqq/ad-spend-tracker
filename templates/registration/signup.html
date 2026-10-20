@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Регистрация · Ad Spend Tracker{% endblock %}
+{% block content %}
+  <section class="form-page">
+    <h1>Создать аккаунт</h1>
+    <p class="muted">Кампании и расходы будут доступны только вам.</p>
+    <form method="post">
+      {% csrf_token %}
+      {% include "includes/form_fields.html" %}
+      <button type="submit">Зарегистрироваться</button>
+    </form>
+    <p>Есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+  </section>
+{% endblock %}
