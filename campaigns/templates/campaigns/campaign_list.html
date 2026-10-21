@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Кампании · Ad Spend Tracker{% endblock %}
 {% block content %}
-  <div class="page-heading"><h1>Ваши кампании</h1></div>
+  <div class="page-heading"><h1>Ваши кампании</h1><a class="button" href="{% url 'campaigns:create' %}">Создать кампанию</a></div>
   {% if campaigns %}
     <div class="table-scroll" role="region" aria-label="Кампании" tabindex="0">
       <table>
@@ -14,6 +14,6 @@
       </table>
     </div>
   {% else %}
-    <div class="empty"><h2>Кампаний пока нет</h2><p class="muted">Здесь будут ваши рекламные кампании.</p></div>
+    <div class="empty"><h2>Кампаний пока нет</h2><p class="muted">Создайте первую кампанию и задайте её бюджет.</p></div>
   {% endif %}
 {% endblock %}

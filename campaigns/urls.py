@@ -6,4 +6,5 @@ app_name = "campaigns"
 
 urlpatterns = [
     path("", views.CampaignListView.as_view(), name="list"),
+    path("campaigns/new/", views.CampaignCreateView.as_view(), name="create"),
 ]

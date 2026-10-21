@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Кампания · Ad Spend Tracker{% endblock %}
+{% block content %}
+  <section class="form-page">
+    <h1>{% if object %}Изменить кампанию{% else %}Создать кампанию{% endif %}</h1>
+    <form method="post">
+      {% csrf_token %}
+      {% include "includes/form_fields.html" %}
+      <div class="actions"><button type="submit">Сохранить кампанию</button><a href="{% url 'campaigns:list' %}">Отмена</a></div>
+    </form>
+  </section>
+{% endblock %}

@@ -2,8 +2,9 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import FormView, ListView
+from django.views.generic import CreateView, FormView, ListView
 
+from .forms import CampaignForm
 from .models import Campaign
 
 
@@ -31,3 +32,14 @@ class CampaignListView(OwnedCampaignMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().order_by("-created_at", "-pk")
+
+
+class CampaignCreateView(LoginRequiredMixin, CreateView):
+    model = Campaign
+    form_class = CampaignForm
+    template_name = "campaigns/campaign_form.html"
+    success_url = reverse_lazy("campaigns:list")
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
