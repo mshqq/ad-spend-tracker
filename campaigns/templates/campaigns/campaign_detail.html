@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}{{ campaign.name }} · Ad Spend Tracker{% endblock %}
+{% block content %}
+  <p><a href="{% url 'campaigns:list' %}">Все кампании</a></p>
+  <div class="page-heading"><h1>{{ campaign.name }}</h1></div>
+  <p class="muted">{{ campaign.get_status_display }} · Создана {{ campaign.created_at|date:"d.m.Y" }}</p>
+  <dl class="summary"><div><dt>Бюджет</dt><dd>{{ campaign.budget|floatformat:2 }} ₽</dd></div></dl>
+{% endblock %}

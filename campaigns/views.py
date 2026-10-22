@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView, ListView
+from django.views.generic import CreateView, DetailView, FormView, ListView
 
 from .forms import CampaignForm
 from .models import Campaign
@@ -43,3 +43,7 @@ class CampaignCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
+
+
+class CampaignDetailView(OwnedCampaignMixin, DetailView):
+    template_name = "campaigns/campaign_detail.html"
