@@ -1,8 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, FormView, ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
 
 from .forms import CampaignForm
 from .models import Campaign
@@ -47,3 +47,11 @@ class CampaignCreateView(LoginRequiredMixin, CreateView):
 
 class CampaignDetailView(OwnedCampaignMixin, DetailView):
     template_name = "campaigns/campaign_detail.html"
+
+
+class CampaignUpdateView(OwnedCampaignMixin, UpdateView):
+    form_class = CampaignForm
+    template_name = "campaigns/campaign_form.html"
+
+    def get_success_url(self):
+        return reverse("campaigns:detail", kwargs={"pk": self.object.pk})

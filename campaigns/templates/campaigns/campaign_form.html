@@ -6,7 +6,7 @@
     <form method="post">
       {% csrf_token %}
       {% include "includes/form_fields.html" %}
-      <div class="actions"><button type="submit">Сохранить кампанию</button><a href="{% url 'campaigns:list' %}">Отмена</a></div>
+      <div class="actions"><button type="submit">Сохранить кампанию</button><a href="{% if object %}{% url 'campaigns:detail' object.pk %}{% else %}{% url 'campaigns:list' %}{% endif %}">Отмена</a></div>
     </form>
   </section>
 {% endblock %}
