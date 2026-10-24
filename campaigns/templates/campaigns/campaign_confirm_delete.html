@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Удаление кампании · Ad Spend Tracker{% endblock %}
+{% block content %}
+  <section class="form-page">
+    <h1>Удалить кампанию?</h1>
+    <p>Кампания «{{ campaign.name }}» и все связанные расходы будут удалены. Отменить это действие нельзя.</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="actions"><button class="danger" type="submit">Удалить кампанию и расходы</button><a href="{% url 'campaigns:detail' campaign.pk %}">Отмена</a></div>
+    </form>
+  </section>
+{% endblock %}

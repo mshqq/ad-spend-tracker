@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, DetailView, FormView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
 from .forms import CampaignForm
 from .models import Campaign
@@ -55,3 +55,8 @@ class CampaignUpdateView(OwnedCampaignMixin, UpdateView):
 
     def get_success_url(self):
         return reverse("campaigns:detail", kwargs={"pk": self.object.pk})
+
+
+class CampaignDeleteView(OwnedCampaignMixin, DeleteView):
+    template_name = "campaigns/campaign_confirm_delete.html"
+    success_url = reverse_lazy("campaigns:list")

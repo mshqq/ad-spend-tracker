@@ -5,4 +5,5 @@
   <div class="page-heading"><h1>{{ campaign.name }}</h1><a class="button secondary" href="{% url 'campaigns:update' campaign.pk %}">Изменить кампанию</a></div>
   <p class="muted">{{ campaign.get_status_display }} · Создана {{ campaign.created_at|date:"d.m.Y" }}</p>
   <dl class="summary"><div><dt>Бюджет</dt><dd>{{ campaign.budget|floatformat:2 }} ₽</dd></div></dl>
+  <p><a href="{% url 'campaigns:delete' campaign.pk %}">Удалить кампанию</a></p>
 {% endblock %}
