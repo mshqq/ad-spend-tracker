@@ -48,6 +48,11 @@ class CampaignCreateView(LoginRequiredMixin, CreateView):
 class CampaignDetailView(OwnedCampaignMixin, DetailView):
     template_name = "campaigns/campaign_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["expenses"] = self.object.expenses.all()
+        return context
+
 
 class CampaignUpdateView(OwnedCampaignMixin, UpdateView):
     form_class = CampaignForm

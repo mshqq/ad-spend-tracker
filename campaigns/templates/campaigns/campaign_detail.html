@@ -5,5 +5,20 @@
   <div class="page-heading"><h1>{{ campaign.name }}</h1><a class="button secondary" href="{% url 'campaigns:update' campaign.pk %}">Изменить кампанию</a></div>
   <p class="muted">{{ campaign.get_status_display }} · Создана {{ campaign.created_at|date:"d.m.Y" }}</p>
   <dl class="summary"><div><dt>Бюджет</dt><dd>{{ campaign.budget|floatformat:2 }} ₽</dd></div></dl>
+  <h2>Расходы</h2>
+  {% if expenses %}
+    <div class="table-scroll" role="region" aria-label="Расходы кампании" tabindex="0">
+      <table>
+        <thead><tr><th scope="col">Дата</th><th scope="col">Комментарий</th><th scope="col" class="number">Сумма, ₽</th></tr></thead>
+        <tbody>
+          {% for expense in expenses %}
+            <tr><td>{{ expense.date|date:"d.m.Y" }}</td><td class="comment">{{ expense.comment|default:"Без комментария" }}</td><td class="number">{{ expense.amount|floatformat:2 }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="empty muted">Расходов пока нет.</p>
+  {% endif %}
   <p><a href="{% url 'campaigns:delete' campaign.pk %}">Удалить кампанию</a></p>
 {% endblock %}
