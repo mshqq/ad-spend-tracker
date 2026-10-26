@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from .forms import CampaignForm
-from .models import Campaign
+from .forms import CampaignForm, ExpenseForm
+from .models import Campaign, Expense
 
 
 class SignUpView(FormView):
@@ -65,3 +66,26 @@ class CampaignUpdateView(OwnedCampaignMixin, UpdateView):
 class CampaignDeleteView(OwnedCampaignMixin, DeleteView):
     template_name = "campaigns/campaign_confirm_delete.html"
     success_url = reverse_lazy("campaigns:list")
+
+
+class ExpenseCreateView(LoginRequiredMixin, CreateView):
+    model = Expense
+    form_class = ExpenseForm
+    template_name = "campaigns/expense_form.html"
+
+    def get_campaign(self):
+        return get_object_or_404(
+            Campaign, pk=self.kwargs["campaign_pk"], owner=self.request.user
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["campaign"] = self.get_campaign()
+        return context
+
+    def form_valid(self, form):
+        form.instance.campaign = self.get_campaign()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("campaigns:detail", kwargs={"pk": self.object.campaign_id})
