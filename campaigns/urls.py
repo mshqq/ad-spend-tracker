@@ -11,4 +11,6 @@ urlpatterns = [
     path("campaigns/<int:pk>/edit/", views.CampaignUpdateView.as_view(), name="update"),
     path("campaigns/<int:pk>/delete/", views.CampaignDeleteView.as_view(), name="delete"),
     path("campaigns/<int:campaign_pk>/expenses/new/", views.ExpenseCreateView.as_view(), name="expense_create"),
+    path("expenses/<int:pk>/edit/", views.ExpenseUpdateView.as_view(), name="expense_update"),
+    path("expenses/<int:pk>/delete/", views.ExpenseDeleteView.as_view(), name="expense_delete"),
 ]

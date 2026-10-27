@@ -9,10 +9,10 @@
   {% if expenses %}
     <div class="table-scroll" role="region" aria-label="Расходы кампании" tabindex="0">
       <table>
-        <thead><tr><th scope="col">Дата</th><th scope="col">Комментарий</th><th scope="col" class="number">Сумма, ₽</th></tr></thead>
+        <thead><tr><th scope="col">Дата</th><th scope="col">Комментарий</th><th scope="col" class="number">Сумма, ₽</th><th scope="col">Действия</th></tr></thead>
         <tbody>
           {% for expense in expenses %}
-            <tr><td>{{ expense.date|date:"d.m.Y" }}</td><td class="comment">{{ expense.comment|default:"Без комментария" }}</td><td class="number">{{ expense.amount|floatformat:2 }}</td></tr>
+            <tr><td>{{ expense.date|date:"d.m.Y" }}</td><td class="comment">{{ expense.comment|default:"Без комментария" }}</td><td class="number">{{ expense.amount|floatformat:2 }}</td><td><div class="actions"><a aria-label="Изменить расход от {{ expense.date|date:'d.m.Y' }} на {{ expense.amount }} рублей" href="{% url 'campaigns:expense_update' expense.pk %}">Изменить</a><a aria-label="Удалить расход от {{ expense.date|date:'d.m.Y' }} на {{ expense.amount }} рублей" href="{% url 'campaigns:expense_delete' expense.pk %}">Удалить</a></div></td></tr>
           {% endfor %}
         </tbody>
       </table>

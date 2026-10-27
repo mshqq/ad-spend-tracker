@@ -89,3 +89,27 @@ class ExpenseCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse("campaigns:detail", kwargs={"pk": self.object.campaign_id})
+
+
+class OwnedExpenseMixin(LoginRequiredMixin):
+    model = Expense
+
+    def get_queryset(self):
+        return Expense.objects.filter(campaign__owner=self.request.user).select_related("campaign")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["campaign"] = self.object.campaign
+        return context
+
+    def get_success_url(self):
+        return reverse("campaigns:detail", kwargs={"pk": self.object.campaign_id})
+
+
+class ExpenseUpdateView(OwnedExpenseMixin, UpdateView):
+    form_class = ExpenseForm
+    template_name = "campaigns/expense_form.html"
+
+
+class ExpenseDeleteView(OwnedExpenseMixin, DeleteView):
+    template_name = "campaigns/expense_confirm_delete.html"

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Удаление расхода · Ad Spend Tracker{% endblock %}
+{% block content %}
+  <section class="form-page">
+    <h1>Удалить расход?</h1>
+    <p>{{ expense.amount|floatformat:2 }} ₽ от {{ expense.date|date:"d.m.Y" }} в кампании «{{ campaign.name }}».</p>
+    <p>Отменить это действие нельзя.</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="actions"><button class="danger" type="submit">Удалить расход</button><a href="{% url 'campaigns:detail' campaign.pk %}">Отмена</a></div>
+    </form>
+  </section>
+{% endblock %}
