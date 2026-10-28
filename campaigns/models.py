@@ -6,6 +6,18 @@ from django.db import models
 from django.utils import timezone
 
 
+class CampaignQuerySet(models.QuerySet):
+    def with_totals(self):
+        return self.annotate(
+            total_spent=models.Sum("expenses__amount", default=Decimal("0.00")),
+        ).annotate(
+            remaining_budget=models.ExpressionWrapper(
+                models.F("budget") - models.F("total_spent"),
+                output_field=models.DecimalField(max_digits=18, decimal_places=2),
+            ),
+        )
+
+
 class Campaign(models.Model):
     class Status(models.TextChoices):
         DRAFT = "draft", "Черновик"
@@ -30,6 +42,8 @@ class Campaign(models.Model):
         default=Status.DRAFT,
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = CampaignQuerySet.as_manager()
 
     class Meta:
         constraints = [

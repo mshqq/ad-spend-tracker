@@ -24,7 +24,7 @@ class OwnedCampaignMixin(LoginRequiredMixin):
     model = Campaign
 
     def get_queryset(self):
-        return Campaign.objects.filter(owner=self.request.user)
+        return Campaign.objects.filter(owner=self.request.user).with_totals()
 
 
 class CampaignListView(OwnedCampaignMixin, ListView):

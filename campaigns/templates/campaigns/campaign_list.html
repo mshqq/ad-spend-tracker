@@ -5,10 +5,10 @@
   {% if campaigns %}
     <div class="table-scroll" role="region" aria-label="Кампании" tabindex="0">
       <table>
-        <thead><tr><th scope="col">Кампания</th><th scope="col">Статус</th><th scope="col" class="number">Бюджет, ₽</th></tr></thead>
+        <thead><tr><th scope="col">Кампания</th><th scope="col">Статус</th><th scope="col" class="number">Бюджет, ₽</th><th scope="col" class="number">Потрачено, ₽</th><th scope="col" class="number">Остаток, ₽</th></tr></thead>
         <tbody>
           {% for campaign in campaigns %}
-            <tr><td><a href="{% url 'campaigns:detail' campaign.pk %}">{{ campaign.name }}</a></td><td class="status">{{ campaign.get_status_display }}</td><td class="number">{{ campaign.budget|floatformat:2 }}</td></tr>
+            <tr><td><a href="{% url 'campaigns:detail' campaign.pk %}">{{ campaign.name }}</a></td><td class="status">{{ campaign.get_status_display }}</td><td class="number">{{ campaign.budget|floatformat:2 }}</td><td class="number">{{ campaign.total_spent|floatformat:2 }}</td><td class="number">{{ campaign.remaining_budget|floatformat:2 }}{% if campaign.remaining_budget < 0 %}<br><span class="errors">Бюджет превышен</span>{% endif %}</td></tr>
           {% endfor %}
         </tbody>
       </table>

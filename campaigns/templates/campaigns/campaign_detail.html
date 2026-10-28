@@ -4,7 +4,12 @@
   <p><a href="{% url 'campaigns:list' %}">Все кампании</a></p>
   <div class="page-heading"><h1>{{ campaign.name }}</h1><a class="button secondary" href="{% url 'campaigns:update' campaign.pk %}">Изменить кампанию</a></div>
   <p class="muted">{{ campaign.get_status_display }} · Создана {{ campaign.created_at|date:"d.m.Y" }}</p>
-  <dl class="summary"><div><dt>Бюджет</dt><dd>{{ campaign.budget|floatformat:2 }} ₽</dd></div></dl>
+  <dl class="summary">
+    <div><dt>Бюджет</dt><dd>{{ campaign.budget|floatformat:2 }} ₽</dd></div>
+    <div><dt>Потрачено за всё время</dt><dd>{{ campaign.total_spent|floatformat:2 }} ₽</dd></div>
+    <div><dt>Остаток</dt><dd>{{ campaign.remaining_budget|floatformat:2 }} ₽</dd></div>
+  </dl>
+  {% if campaign.remaining_budget < 0 %}<p class="notice warning" role="status">Бюджет превышен. Расходы сохранены; увеличьте бюджет или проверьте записи.</p>{% endif %}
   <div class="page-heading"><h2>Расходы</h2><a class="button" href="{% url 'campaigns:expense_create' campaign.pk %}">Добавить расход</a></div>
   {% if expenses %}
     <div class="table-scroll" role="region" aria-label="Расходы кампании" tabindex="0">
