@@ -10,11 +10,6 @@ class CampaignQuerySet(models.QuerySet):
     def with_totals(self):
         return self.annotate(
             total_spent=models.Sum("expenses__amount", default=Decimal("0.00")),
-        ).annotate(
-            remaining_budget=models.ExpressionWrapper(
-                models.F("budget") - models.F("total_spent"),
-                output_field=models.DecimalField(max_digits=18, decimal_places=2),
-            ),
         )
 
 
@@ -55,6 +50,11 @@ class Campaign(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def remaining_budget(self):
+        # SQLite uses floating point for SQL arithmetic; subtract in Decimal instead.
+        return (self.budget - self.total_spent).quantize(Decimal("0.01"))
 
 
 class Expense(models.Model):
