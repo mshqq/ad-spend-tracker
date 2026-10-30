@@ -11,6 +11,12 @@
   </dl>
   {% if campaign.remaining_budget < 0 %}<p class="notice warning" role="status">Бюджет превышен. Расходы сохранены; увеличьте бюджет или проверьте записи.</p>{% endif %}
   <div class="page-heading"><h2>Расходы</h2><a class="button" href="{% url 'campaigns:expense_create' campaign.pk %}">Добавить расход</a></div>
+  <form method="get" class="filters" aria-label="Фильтр расходов по датам">
+    {% include "includes/form_fields.html" with form=filter_form %}
+    <button type="submit">Применить</button>
+    {% if filters_active %}<a href="{% url 'campaigns:detail' campaign.pk %}">Сбросить</a>{% endif %}
+  </form>
+  <p class="muted">Фильтр меняет список расходов. Итоги бюджета учитывают все расходы кампании.</p>
   {% if expenses %}
     <div class="table-scroll" role="region" aria-label="Расходы кампании" tabindex="0">
       <table>
@@ -23,7 +29,7 @@
       </table>
     </div>
   {% else %}
-    <p class="empty muted">Расходов пока нет. Добавьте первый расход, чтобы начать учёт.</p>
+    <p class="empty muted">{% if filters_active %}За выбранный период расходов нет. Измените даты или сбросьте фильтр.{% else %}Расходов пока нет. Добавьте первый расход, чтобы начать учёт.{% endif %}</p>
   {% endif %}
   <p><a href="{% url 'campaigns:delete' campaign.pk %}">Удалить кампанию</a></p>
 {% endblock %}

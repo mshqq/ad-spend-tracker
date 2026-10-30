@@ -2,6 +2,11 @@
 {% block title %}Кампании · Ad Spend Tracker{% endblock %}
 {% block content %}
   <div class="page-heading"><h1>Ваши кампании</h1><a class="button" href="{% url 'campaigns:create' %}">Создать кампанию</a></div>
+  <form method="get" class="filters" aria-label="Фильтр кампаний">
+    {% include "includes/form_fields.html" with form=filter_form %}
+    <button type="submit">Применить</button>
+    {% if filters_active %}<a href="{% url 'campaigns:list' %}">Сбросить</a>{% endif %}
+  </form>
   {% if campaigns %}
     <div class="table-scroll" role="region" aria-label="Кампании" tabindex="0">
       <table>
@@ -14,6 +19,6 @@
       </table>
     </div>
   {% else %}
-    <div class="empty"><h2>Кампаний пока нет</h2><p class="muted">Создайте первую кампанию и задайте её бюджет.</p></div>
+    <div class="empty">{% if filters_active %}<h2>Кампании не найдены</h2><p class="muted">Измените фильтр или сбросьте его, чтобы увидеть все кампании.</p>{% else %}<h2>Кампаний пока нет</h2><p class="muted">Создайте первую кампанию и задайте её бюджет.</p>{% endif %}</div>
   {% endif %}
 {% endblock %}

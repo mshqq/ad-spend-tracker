@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from .forms import CampaignForm, ExpenseForm
+from .forms import CampaignFilterForm, CampaignForm, ExpenseFilterForm, ExpenseForm
 from .models import Campaign, Expense
 
 
@@ -32,7 +32,19 @@ class CampaignListView(OwnedCampaignMixin, ListView):
     context_object_name = "campaigns"
 
     def get_queryset(self):
-        return super().get_queryset().order_by("-created_at", "-pk")
+        queryset = super().get_queryset().order_by("-created_at", "-pk")
+        self.filter_form = CampaignFilterForm(self.request.GET)
+        if not self.filter_form.is_valid():
+            return queryset.none()
+        if status := self.filter_form.cleaned_data["status"]:
+            queryset = queryset.filter(status=status)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter_form"] = self.filter_form
+        context["filters_active"] = bool(self.request.GET)
+        return context
 
 
 class CampaignCreateView(LoginRequiredMixin, CreateView):
@@ -51,7 +63,18 @@ class CampaignDetailView(OwnedCampaignMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["expenses"] = self.object.expenses.all()
+        expenses = self.object.expenses.all()
+        form = ExpenseFilterForm(self.request.GET)
+        if form.is_valid():
+            if date_from := form.cleaned_data["date_from"]:
+                expenses = expenses.filter(date__gte=date_from)
+            if date_to := form.cleaned_data["date_to"]:
+                expenses = expenses.filter(date__lte=date_to)
+        else:
+            expenses = expenses.none()
+        context["expenses"] = expenses
+        context["filter_form"] = form
+        context["filters_active"] = bool(self.request.GET)
         return context
 
 
